@@ -15,7 +15,7 @@ namespace OrderingService
         {
             builder.Services.AddHttpClient<BarClient> (c =>
             {
-                c.BaseAddress = new Uri("https://localhost:5001/");
+                c.BaseAddress = new Uri("https://bar-api.azurewebsites.net");
                 c.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
             });
             builder.Services.AddScoped<IOrderRepository, InMemoryOrderRepository>();
