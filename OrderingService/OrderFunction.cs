@@ -54,7 +54,12 @@ namespace OrderingService
                 order = await _orders.Get(id);
                 if (order == null)
                 {
-                    throw new ArgumentException($"Order with {id} does not exist");
+                    return new BadRequestObjectResult($"Order with id {id} not found");
+                }
+
+                if (order.Status == OrderStatus.Finalized)
+                {
+                    return new BadRequestObjectResult("You cant add cocktails to closed order");
                 }
             }
             else
