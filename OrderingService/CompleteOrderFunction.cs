@@ -16,7 +16,7 @@ namespace OrderingService
         }
 
         [FunctionName("CompleteOrder")]
-        public async Task CompleteOrder([ServiceBusTrigger("complete-order-commands-queue", Connection = "temp")]CompleteOrderCommand completeCommand, ILogger log)
+        public async Task CompleteOrder([ServiceBusTrigger("complete-order-commands-queue", Connection = "Connection")]CompleteOrderCommand completeCommand, ILogger log)
         {
             log.LogInformation($"C# ServiceBus queue trigger function processed message: {completeCommand}");
             var order = await _orders.Get(completeCommand.Id);
