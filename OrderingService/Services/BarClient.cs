@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace OrderingService.Services
 {
@@ -22,9 +23,15 @@ namespace OrderingService.Services
             var response = await _httpClient.GetAsync("api/menu");
 
             response.EnsureSuccessStatusCode();
+            return JsonConvert.DeserializeObject<IEnumerable<MenuItem>>(await response.Content.ReadAsStringAsync());
+        }
 
-            using var responseStream = await response.Content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync<IEnumerable<MenuItem>>(responseStream);
+        public async Task<MenuItem> GetMenuItem(string name)
+        {
+            var response = await _httpClient.GetAsync($"api/menu/{name}");
+
+            response.EnsureSuccessStatusCode();
+            return  JsonConvert.DeserializeObject<MenuItem>(await response.Content.ReadAsStringAsync());
         }
     }
 

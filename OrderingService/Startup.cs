@@ -2,6 +2,7 @@
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using OrderingService.DataAccess;
 using OrderingService.Services;
 
 [assembly: FunctionsStartup(typeof(OrderingService.Startup))]
@@ -17,7 +18,7 @@ namespace OrderingService
                 c.BaseAddress = new Uri("https://localhost:5001/");
                 c.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
             });
-            //builder.Services.AddSingleton<ILoggerProvider>();
+            builder.Services.AddScoped<IOrderRepository, InMemoryOrderRepository>();
         }
     }
 }
