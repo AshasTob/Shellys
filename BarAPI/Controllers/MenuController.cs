@@ -41,8 +41,8 @@ namespace BarAPI.Controllers
         }
 
         // PUT api/<MenuController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{name}")]
+        public void Put(string name, [FromBody] string value)
         {
             throw new NotImplementedException("Our bar does not allow to modify a menu! (yet)");
         }

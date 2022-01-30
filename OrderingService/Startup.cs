@@ -23,8 +23,8 @@ namespace OrderingService
             });
             builder.Services.AddScoped<IOrderRepository, InMemoryOrderRepository>();
 
-            builder.Services.AddScoped<SqlConnection>(sp => new SqlConnection(""));
-            builder.Services.AddScoped<IDbConnection>(sp => sp.GetRequiredService<SqlConnection>());
+            //builder.Services.AddScoped<SqlConnection>(sp => new SqlConnection("TMP"));
+            //builder.Services.AddScoped<IDbConnection>(sp => sp.GetRequiredService<SqlConnection>());
         }
     }
 }

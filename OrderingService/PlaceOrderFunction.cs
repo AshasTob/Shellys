@@ -64,11 +64,11 @@ namespace OrderingService
             }
             else
             {
-                order = new Order();
+                order = new Order() {Status = OrderStatus.Initiated};
             }
 
             order.TotalPrice += cocktail.Price;
-            await _orders.Upsert(order);
+            order.Id = await _orders.Upsert(order);
 
 
             return new OkObjectResult(order);

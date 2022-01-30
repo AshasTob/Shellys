@@ -29,8 +29,8 @@ namespace BarAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BarAPI", Version = "v1" });
             });
             services.AddScoped<IMenuRepository, InMemoryRepository>();
-            services.AddScoped<SqlConnection>(sp => new SqlConnection(""));
-            services.AddScoped<IDbConnection>(sp => sp.GetRequiredService<SqlConnection>());
+            //services.AddScoped<SqlConnection>(sp => new SqlConnection("TMP"));
+            //services.AddScoped<IDbConnection>(sp => sp.GetRequiredService<SqlConnection>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

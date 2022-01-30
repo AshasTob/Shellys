@@ -14,34 +14,40 @@ namespace DataAccess
             _databaseConnection = databaseConnection;
         }
 
-        public Task<Order> Get(int id)
+        public async Task<Order> Get(int id)
         {
-            var query = @"SELECT * FROM [dbo].Order WHERE Id=@id";
+            var query = @"SELECT * FROM [dbo].[Order] WHERE Id=@Id";
             var queryParameters = new { Id = id };
-
-            return _databaseConnection.QueryFirstAsync<Order>(query, queryParameters);
+            return await _databaseConnection.QueryFirstAsync<Order>(query, queryParameters);
         }
 
-        public Task<int> Upsert(Order order)
+        public async Task<int> Upsert(Order order)
         {
             var query = @"
                            UPDATE [dbo].[Order]
                            SET [TotalPrice] = @TotalPrice,
-                               [Status] = @Status,
+                               [Status] = @Status
                            WHERE [Id] = @Id
                            IF @@ROWCOUNT = 0
                            BEGIN
                               INSERT INTO [dbo].[Order] ([TotalPrice], [Status]) VALUES (@TotalPrice, @Status)
+                              SELECT SCOPE_IDENTITY()
                            END";
 
             var queryParameters = new
             {
                 order.Id,
-                order.TotalPrice,
-                order.Status
+                TotalPrice = order.TotalPrice,
+                Status = (int)order.Status
             };
 
-            return _databaseConnection.ExecuteScalarAsync<int>(query, queryParameters);
+            int? id = await _databaseConnection.ExecuteScalarAsync<int?>(query, queryParameters);
+            if (id == null)
+            {
+                return order.Id;
+            }
+
+            return id.Value;
         }
     }
 }
