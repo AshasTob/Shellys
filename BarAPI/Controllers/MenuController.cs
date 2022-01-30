@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using BarAPI.DataAccess;
-using BarAPI.Domain;
+using DataAccess;
+using DataAccess.Domain;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

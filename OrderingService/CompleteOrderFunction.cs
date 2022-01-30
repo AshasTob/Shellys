@@ -1,8 +1,9 @@
 using System;
 using System.Threading.Tasks;
+using DataAccess;
+using DataAccess.Domain;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using OrderingService.DataAccess;
 
 namespace OrderingService
 {

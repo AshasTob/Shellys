@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BarAPI.Domain;
+using DataAccess;
+using DataAccess.Domain;
 
 namespace BarAPI.DataAccess
 {

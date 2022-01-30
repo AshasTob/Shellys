@@ -1,7 +1,5 @@
 ﻿
-using System.Collections.Generic;
-
-namespace BarAPI.Domain
+namespace DataAccess.Domain
 {
     public class MenuItem
     {

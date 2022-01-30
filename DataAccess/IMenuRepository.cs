@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using BarAPI.Domain;
+﻿using System.Threading.Tasks;
+using DataAccess.Domain;
 
-namespace BarAPI.DataAccess
+namespace DataAccess
 {
     public interface IMenuRepository
     {

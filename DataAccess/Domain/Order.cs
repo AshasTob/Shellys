@@ -1,4 +1,4 @@
-﻿namespace OrderingService.DataAccess
+﻿namespace DataAccess.Domain
 {
     public class Order
     {

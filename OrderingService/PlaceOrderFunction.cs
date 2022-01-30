@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using DataAccess;
+using DataAccess.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -9,8 +11,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
-using OrderingService.DataAccess;
 using OrderingService.Services;
 
 namespace OrderingService

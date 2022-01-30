@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccess;
+using DataAccess.Domain;
 
 namespace OrderingService.DataAccess
 {
@@ -16,7 +18,7 @@ namespace OrderingService.DataAccess
             return Task.FromResult(_orders.FirstOrDefault(o => o.Id == id));
         }
 
-        public Task Upsert(Order order)
+        public Task<int> Upsert(Order order)
         {
             var index = _orders.FindIndex(o => o == order);
             if (index == -1)
@@ -30,7 +32,7 @@ namespace OrderingService.DataAccess
                 _orders[index] = order;
             }
 
-            return Task.CompletedTask;
+            return Task.FromResult(order.Id);
         }
     }
 }
