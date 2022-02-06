@@ -1,10 +1,9 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using DataAccess;
-using DataAccess.Domain;
+using DataAccess.Data;
+using DataAccess.Repository;
+using System.Collections.Generic;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BarAPI.Controllers
 {
@@ -21,37 +20,91 @@ namespace BarAPI.Controllers
 
         // GET: api/<MenuController>
         [HttpGet]
-        public Task<MenuItem[]> Get()
+        [ProducesResponseType(200, Type = typeof(List<MenuItem>))]
+        public async Task<List<MenuItem>> GetAll()
         {
-            return _menuRepository.Get();
+            return await _menuRepository.GetAllItems();
         }
 
-        // GET api/<MenuController>/name
-        [HttpGet("{name}")]
-        public Task<MenuItem> Get(string name)
+        // GET api/<MenuController>/id
+        [HttpGet("{id}")]
+        [ProducesResponseType(200, Type = typeof(MenuItem))]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Get(int id)
         {
-            return _menuRepository.GetItem(name);
+            MenuItem menuItem = await _menuRepository.GetItem(id);
+            if(menuItem == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(menuItem);
+            }
         }
 
         // POST api/<MenuController>
         [HttpPost]
-        public async Task Post([FromBody] MenuItem item)
+        [ProducesResponseType(201, Type = typeof(MenuItem))]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> Post([FromBody] MenuItem item)
         {
-            await _menuRepository.Add(item);
+            if(item == null)
+            {
+                return BadRequest();
+            }
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            MenuItem exist = await _menuRepository.GetItem(item.Id);
+            if (exist != null)
+            {
+                return BadRequest($"Item with id= {item.Id} already exists");
+            }
+            MenuItem menuItem = await _menuRepository.Add(item);
+            return CreatedAtAction(nameof(Post), menuItem);
         }
 
         // PUT api/<MenuController>/5
-        [HttpPut("{name}")]
-        public void Put(string name, [FromBody] string value)
+        [HttpPut("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Update(int id, [FromBody] MenuItem item)
         {
-            throw new NotImplementedException("Our bar does not allow to modify a menu! (yet)");
+            if(item.Id != id)
+            {
+                return BadRequest();
+            }
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await _menuRepository.Update(item);
+            return new NoContentResult();
         }
 
-        // DELETE api/<MenuController>/name
-        [HttpDelete("{name}")]
-        public async Task Delete(string name)
+        // DELETE api/<MenuController>/id
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Delete(int id)
         {
-            await _menuRepository.Remove(name);
+            var exist = await _menuRepository.GetItem(id);
+            if(exist == null)
+            {
+                return NotFound();
+            }
+            bool deleted = await _menuRepository.Remove(id);
+            if (deleted)
+            {
+                return new NoContentResult();
+            }
+            else
+            {
+                return BadRequest($"Item with id={id} was found but faild to delete");
+            }
         }
     }
 }

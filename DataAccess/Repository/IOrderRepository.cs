@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using DataAccess.Domain;
+using DataAccess.Data;
 
-namespace DataAccess
+namespace DataAccess.Repository
 {
     public interface IOrderRepository
     {
