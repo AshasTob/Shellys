@@ -23,6 +23,7 @@ namespace BarAPI
 
             services.AddControllers();
             services.AddScoped<IMenuRepository, MenuRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BarAPI", Version = "v1" });

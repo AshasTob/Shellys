@@ -70,7 +70,6 @@ namespace BarAPI.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
         public async Task<IActionResult> Update(int id, [FromBody] MenuItem item)
         {
             if(item.Id != id)

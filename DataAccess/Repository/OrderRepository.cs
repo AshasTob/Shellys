@@ -31,19 +31,19 @@ namespace DataAccess.Repository
 
         public async Task<int> Upsert(Order order)
         {
-            Order ord = _barDataBase.Orders.Find(order.Id);
+            bool ord = _barDataBase.Orders.Contains(order);
             int affrcted;
-            if (ord == null)
+            if (ord == false)
             {
                 _barDataBase.Orders.Add(order);
                 affrcted = await _barDataBase.SaveChangesAsync();
-                return affrcted;
+                return (affrcted == 1) ? -201 : affrcted;
             }
             else
             {
                 _barDataBase.Orders.Update(order);
                 affrcted = await _barDataBase.SaveChangesAsync();
-                return affrcted;
+                return (affrcted == 1) ? -204 : affrcted;
             }
         }
     }
