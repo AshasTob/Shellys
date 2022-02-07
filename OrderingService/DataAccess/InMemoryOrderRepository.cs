@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccess.Data;
-using DataAccess.Repository;
+using DataAccess;
+using DataAccess.Domain;
 
 namespace OrderingService.DataAccess
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using DataAccess.Repository;
-using DataAccess.Data;
+using DataAccess;
+using DataAccess.Domain;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 

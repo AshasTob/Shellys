@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnqueueCompleteOrderCommand
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{C7322E06-A4DE-47DD-BBD5-7F3D4A729C69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderTimeOutService", "OrderTimeOutService\OrderTimeOutService.csproj", "{5C481AE0-DE38-48CB-84C6-43EECCC24BE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderTimeOutService", "OrderTimeOutService\OrderTimeOutService.csproj", "{19AF5413-122C-4A11-B6D7-E3A8BDEB8111}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{C7322E06-A4DE-47DD-BBD5-7F3D4A729C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7322E06-A4DE-47DD-BBD5-7F3D4A729C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7322E06-A4DE-47DD-BBD5-7F3D4A729C69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C481AE0-DE38-48CB-84C6-43EECCC24BE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C481AE0-DE38-48CB-84C6-43EECCC24BE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C481AE0-DE38-48CB-84C6-43EECCC24BE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C481AE0-DE38-48CB-84C6-43EECCC24BE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19AF5413-122C-4A11-B6D7-E3A8BDEB8111}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19AF5413-122C-4A11-B6D7-E3A8BDEB8111}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19AF5413-122C-4A11-B6D7-E3A8BDEB8111}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19AF5413-122C-4A11-B6D7-E3A8BDEB8111}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
