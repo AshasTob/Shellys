@@ -16,7 +16,7 @@ namespace DataAccess.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=tcp:mybarsql.database.windows.net,1433;Initial Catalog=BarDataBase;Persist Security Info=False;User ID=bar_admin;Password=C#isTheBest;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                optionsBuilder.UseSqlServer("");
             }
         }
 
