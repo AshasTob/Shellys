@@ -38,25 +38,20 @@ namespace BarAPI.Controllers
         
         // POST: api/<OrderController>/
         [HttpPost]
-        [ProducesResponseType(201, Type = typeof(Order))]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(200, Type = typeof(Order))]
         [ProducesResponseType(400)]
         public async Task<IActionResult> Upsert([FromBody] Order item)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            bool isUpsert = await _orderRepository.Upsert(item);
+            if (isUpsert)
             {
-                return BadRequest(ModelState); 
+                return Ok(item);
             }
-            int affacted = await _orderRepository.Upsert(item);
-            if(affacted == -201)
+            else
             {
-                return CreatedAtAction(nameof(Upsert), item);
+                return BadRequest();
             }
-            if(affacted == -204)
-            {
-                return new NoContentResult();
-            }
-            return BadRequest();
         }
     }
 }
