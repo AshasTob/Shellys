@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DataAccess.Data;
 
 namespace DataAccess.Repository
@@ -6,6 +7,7 @@ namespace DataAccess.Repository
     public interface IOrderRepository
     {
         Task<Order> Get(int id);
-        Task<int> Upsert(Order order);
+        Task<List<Order>> GetOrdersByStatus(OrderStatus status);
+        Task<bool> Upsert(Order order);
     }
 }
