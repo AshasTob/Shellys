@@ -49,21 +49,21 @@ namespace BarAPI.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> Post([FromBody] MenuItem item)
         {
-            if(item == null)
+            if(item == null) return BadRequest();           
+            if(!ModelState.IsValid) return BadRequest(ModelState);           
+            MenuItem exist = await _menuRepository.GetItem(item.Id);
+            if (string.IsNullOrWhiteSpace(item.Name)) return BadRequest("Item name is Null or contain only WhiteSpace");
+            if (item.Price <= 0) return BadRequest("Item price must be above zero");
+            if (exist != null) return BadRequest($"Item with id = {item.Id} already exists");
+            bool isAdded = await _menuRepository.Add(item);
+            if (isAdded)
+            {
+                return CreatedAtAction(nameof(Post), item);
+            }
+            else
             {
                 return BadRequest();
             }
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            MenuItem exist = await _menuRepository.GetItem(item.Id);
-            if (exist != null)
-            {
-                return BadRequest($"Item with id= {item.Id} already exists");
-            }
-            MenuItem menuItem = await _menuRepository.Add(item);
-            return CreatedAtAction(nameof(Post), menuItem);
         }
 
         // PUT api/<MenuController>/5
@@ -72,16 +72,19 @@ namespace BarAPI.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> Update(int id, [FromBody] MenuItem item)
         {
-            if(item.Id != id)
+            if(item.Id != id) return BadRequest();
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+            if (string.IsNullOrWhiteSpace(item.Name)) return BadRequest("Item name is Null or contain only WhiteSpace");
+            if (item.Price <= 0) return BadRequest("Item price must be above zero");
+            bool isUpdate = await _menuRepository.Update(item);
+            if(isUpdate)
+            {
+                return new NoContentResult();
+            }
+            else
             {
                 return BadRequest();
             }
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            await _menuRepository.Update(item);
-            return new NoContentResult();
         }
 
         // DELETE api/<MenuController>/id
@@ -91,18 +94,15 @@ namespace BarAPI.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var exist = await _menuRepository.GetItem(id);
-            if(exist == null)
-            {
-                return NotFound();
-            }
-            bool deleted = await _menuRepository.Remove(id);
-            if (deleted)
+            if(exist == null) return NotFound();           
+            bool isDelete = await _menuRepository.Remove(id);
+            if (isDelete)
             {
                 return new NoContentResult();
             }
             else
             {
-                return BadRequest($"Item with id={id} was found but faild to delete");
+                return BadRequest($"Item with id = {id} was found but faild to delete");
             }
         }
     }
