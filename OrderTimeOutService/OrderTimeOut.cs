@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DataAccess.Data;
+using DataAccess.Repository;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
@@ -10,24 +12,23 @@ namespace OrderTimeOutService
 {
     public  class OrderTimeOut
     {
-        private readonly BarDataBase _barDataBase;
+        private readonly OrderRepository _orderRepository;
 
         public OrderTimeOut()
         {
-            _barDataBase = new BarDataBase();
+            _orderRepository = new OrderRepository();
         }
 
         [FunctionName("OrderTimeOut")]
-        public void Run([TimerTrigger("0 0 0 * * *")]TimerInfo myTimer, ILogger log)
+        public async Task Run([TimerTrigger("0 0 0 * * *")]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
-            IEnumerable<Order> orders = _barDataBase.Orders.Where(ord => ord.Status == OrderStatus.Initiated);
-            foreach (var ord in orders)
+            List<Order> initiatedOrders = await _orderRepository.GetOrdersByStatus(OrderStatus.Initiated);
+            foreach (var order in initiatedOrders)
             {
-                ord.Status = OrderStatus.Finalized;
-                _barDataBase.Orders.Update(ord);
+                order.Status = OrderStatus.Finalized;
+                await _orderRepository.Upsert(order);
             }
-            _barDataBase.SaveChanges();
         }
     }
 }
