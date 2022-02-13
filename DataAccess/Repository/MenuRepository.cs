@@ -16,25 +16,18 @@ namespace DataAccess.Repository
             _barDataBase = new BarDataBase();
         }
                  
-        public async Task<MenuItem> Add(MenuItem item)
+        public Task<bool> Add(MenuItem item)
         {
-            if (item == null) throw new NullReferenceException();
-            EntityEntry<MenuItem> added = await _barDataBase.AddAsync(item);
-            int affacted = await _barDataBase.SaveChangesAsync();
-            if(affacted == 1)
-            {
-                return item;
-            }
-            else
-            {
-                return null;
-            }
+            EntityEntry<MenuItem> added =  _barDataBase.Add(item);
+            int affected = _barDataBase.SaveChanges();
+            bool isAdded = (affected == 1) ? true : false;
+            return Task.FromResult(isAdded);
         }
 
-        public async Task<MenuItem> GetItem(int id)
+        public Task<MenuItem> GetItem(int id)
         {
-            MenuItem menuItem = await _barDataBase.Menu.FindAsync(id);
-            return menuItem;
+            MenuItem menuItem = _barDataBase.Menu.Find(id);
+            return Task.FromResult(menuItem);
         }
 
         public  Task<List<MenuItem>> GetAllItems()
@@ -42,34 +35,22 @@ namespace DataAccess.Repository
             return  Task<List<MenuItem>>.FromResult(_barDataBase.Menu.ToList());
         }
 
-        public async Task<bool> Update (MenuItem menuItem)
+        public Task<bool> Update (MenuItem menuItem)
         {
             _barDataBase.Menu.Update(menuItem);
-            int affected = await _barDataBase.SaveChangesAsync();
-            if(affected == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            int affected = _barDataBase.SaveChanges();
+            bool isUpdate = (affected == 1) ? true : false;
+            return Task.FromResult(isUpdate);
         }
 
-        public async Task<bool> Remove(int id)
+        public Task<bool> Remove(int id)
         {
             MenuItem menuItem = _barDataBase.Menu.Find(id);
-            if (menuItem == null) throw new ArgumentException($"No items with id={id} was found");
+            if (menuItem == null) return Task.FromResult(false);
             _barDataBase.Menu.Remove(menuItem);
-            int affected = await _barDataBase.SaveChangesAsync();
-            if(affected == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            int affected = _barDataBase.SaveChanges();
+            bool isRemove = (affected == 1) ? true : false;
+            return Task.FromResult(isRemove);
         }
     }
 }
