@@ -1,9 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.22" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.22" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.22" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.13" />
   </ItemGroup>
   <ItemGroup>
