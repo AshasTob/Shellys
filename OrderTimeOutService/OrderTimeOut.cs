@@ -1,14 +1,14 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DataAccess.Data;
 using DataAccess.Repository;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OrderTimeOutService.BlobService;
 using System.Globalization;
+
+using static System.Environment;
 
 namespace OrderTimeOutService
 {
@@ -16,19 +16,16 @@ namespace OrderTimeOutService
     {
         private readonly OrderRepository _orderRepository;
         private readonly BlobStorage _blobStorage;
-        private readonly IConfigurationBuilder _configuration;
 
         public OrderTimeOut()
         {
             _orderRepository = new OrderRepository();
-            _configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _blobStorage = new BlobStorage(_configuration);
+            _blobStorage = new BlobStorage();
+           
         }
 
         [FunctionName("OrderTimeOut")]
-        public async Task Run([TimerTrigger("0 0 0 * * *")]TimerInfo myTimer, ILogger log)
+        public  async Task Run([TimerTrigger("0 0 0 * * *")]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
             List<Order> initiatedOrders = await _orderRepository.GetOrdersByStatus(OrderStatus.Initiated);
@@ -39,7 +36,7 @@ namespace OrderTimeOutService
                 finalizedOrdersSum += order.TotalPrice;
                 await _orderRepository.Upsert(order);
             }
-            string reportData = $"{initiatedOrders.Count},{finalizedOrdersSum.ToString(new CultureInfo("en-us",false))}";
+            string reportData = $"{initiatedOrders.Count},{finalizedOrdersSum.ToString(new CultureInfo("en-us", false))}";
             DateTime dateTime = DateTime.Now;
             string reportFileName = $"{dateTime.Day}_{dateTime.Month}_{dateTime.Year}_report.csv";
             await _blobStorage.UploadContentBlobAsync(reportData, reportFileName);
