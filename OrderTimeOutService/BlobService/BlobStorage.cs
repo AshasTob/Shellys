@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Text;
 using System.IO;
+using System;
+using static System.Environment;
 
 namespace OrderTimeOutService.BlobService
 {
@@ -10,11 +12,12 @@ namespace OrderTimeOutService.BlobService
     {
         private readonly BlobServiceClient _blobServiceClient;
         private readonly string _blobContainerName;
+       
 
-        public BlobStorage(IConfigurationBuilder configuration)
+        public BlobStorage()
         {
-            _blobServiceClient = new BlobServiceClient(configuration.Build().GetConnectionString("BlobStorage"));
-            _blobContainerName = configuration.Build().GetSection("Containers").GetSection("OrderTimeOutReport").Value;
+            _blobServiceClient = new BlobServiceClient(GetEnvironmentVariable("BlobStorageConnectionString", EnvironmentVariableTarget.Process));
+            _blobContainerName = GetEnvironmentVariable("OrderTimeOutReportContainer", EnvironmentVariableTarget.Process);
         }
 
         public async Task UploadContentBlobAsync(string content, string fileName)
