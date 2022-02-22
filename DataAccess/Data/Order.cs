@@ -1,4 +1,8 @@
-﻿namespace DataAccess.Domain
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace DataAccess.Data
 {
     public class Order
     {
@@ -9,7 +13,7 @@
 
     public enum OrderStatus
     {
-        Initiated=1,
+        Initiated = 1,
         Finalized
     }
 }

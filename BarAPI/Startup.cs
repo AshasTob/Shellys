@@ -1,12 +1,10 @@
-using System.Data;
-using System.Data.SqlClient;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using BarAPI.DataAccess;
-using DataAccess;
+using DataAccess.Repository;
+using DataAccess.Data;
 
 namespace BarAPI
 {
@@ -24,11 +22,12 @@ namespace BarAPI
         {
 
             services.AddControllers();
+            services.AddScoped<IMenuRepository, MenuRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BarAPI", Version = "v1" });
             });
-            services.AddScoped<IMenuRepository, InMemoryRepository>();
             //services.AddScoped<SqlConnection>(sp => new SqlConnection("TMP"));
             //services.AddScoped<IDbConnection>(sp => sp.GetRequiredService<SqlConnection>());
         }
@@ -40,7 +39,7 @@ namespace BarAPI
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BarAPI v1"));
-            
+
             app.UseHttpsRedirection();
             app.UseRouting();
 
